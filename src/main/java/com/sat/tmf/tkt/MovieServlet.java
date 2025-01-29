@@ -1,5 +1,6 @@
 package com.sat.tmf.tkt;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -23,9 +24,7 @@ public class MovieServlet extends HttpServlet {
 		System.out.println(request.getParameter("selectedMovieId"));
 		Long movieId = Long.parseLong(request.getParameter("selectedMovieId"));
 		ServletContext context = request.getServletContext();
-		
 		List<Movie> movieList = (List<Movie>)context.getAttribute("movieList");
-		ServletConfig config = getServletConfig();
 		
 		Movie selectedMovie = null;
 		for(Movie m:movieList) {
@@ -34,9 +33,11 @@ public class MovieServlet extends HttpServlet {
 			}
 		}
 		if(selectedMovie != null) {
-			String movieHtmlStr = buildMovieHtmlStr(selectedMovie);
-			
-			response.getWriter().append(movieHtmlStr);
+			request.setAttribute("selectedMovieObj", selectedMovie);
+			RequestDispatcher rd =   request.getRequestDispatcher("movie_info.jsp");
+			rd.forward(request, response);
+//			String movieHtmlStr = buildMovieHtmlStr(selectedMovie);
+//			response.getWriter().append(movieHtmlStr);
 		}else {
 			response.getWriter().append("No information on selected Movie");
 		}

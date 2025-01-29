@@ -48,6 +48,7 @@ public class LoginServlet extends HttpServlet {
 		moviesList.add(arya);
 		moviesList.add(khaidi);
 		moviesList.add(raj);
+		moviesList.add(raj);
 		
 	}
 
@@ -59,41 +60,13 @@ public class LoginServlet extends HttpServlet {
 		for(User user: registeredUserList) {
 			if(username.equalsIgnoreCase(user.getUsername())) {
 				if(password.equals(user.getPassword())) {
-					ServletContext constext = request.getServletContext();
-					constext.setAttribute("movieList", moviesList);
+					ServletContext context = request.getServletContext();
+					context.setAttribute("movieList", moviesList);
 					
 					HttpSession session = request.getSession();
 					session.setAttribute("username", user);
 					System.out.println(username +" is a Valid User");
-					response.getWriter().append("<!DOCTYPE html>\r\n"
-							+ "<html>\r\n"
-							+ "<head>\r\n"
-							+ "<meta charset=\"ISO-8859-1\">\r\n"
-							+ "<title>Dashboard</title>\r\n"
-							+ "</head>\r\n"
-							+ "<body>\r\n"
-							+ "	<div id=\"dashboard_header\">\r\n"
-							+ "		<img src=\"\"\"/>\r\n"
-							+ "		<input type=\"text\" placeholder=\"Search Movie\" name=\"search_movie_str\"/>\r\n"
-							+ "		<input type=\"text\" placeholder=\"Search Screen\" name=\"search_screen_str\" />\r\n"
-							+ "		<img src=\"\"/>\r\n"
-							+ "		\r\n"
-							+ "	</div>\r\n"
-							+ "	<div id=\"dashboard_container\">\r\n")
-					.append(getMovieListHtml())
-					//.append( "		<img src=\"default_movie_icon.png\" height=\"150\" width=\"150\"/>  \r\n")
-					.append("	</div>\r\n"
-							+ "</body>\r\n"
-							+ "</html>");
-					response.getWriter().append("<script>\r\n"
-							+ "\r\n"
-							+ "function submitMovieForm(clickedMovieId){\r\n"
-							+ "	document.getElementById(\"selectedMovieId\").value=clickedMovieId;\r\n"
-							+ "	document.getElementById(\"movieform\").submit();\r\n"
-							+ "}\r\n"
-							+ "\r\n"
-							+ "</script>");
-					
+					response.sendRedirect("http://localhost:8081/tkt_booking_web/dashboard.jsp"); 
 				}else {
 					System.out.println("Incorrect credentials");
 					response.getWriter().print("Sorry UserName or Password Error!");  
